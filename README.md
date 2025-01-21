@@ -1,3 +1,15 @@
-Fantasy Football Web Application with Flask
-This project is a web application developed with Python and Flask framework. It serves as a platform for managing a fantasy football team for amateur leagues. Users can select six players for each matchday, and their scores are stored in a MySQL database. The application features three main views: player selection, leaderboard, and player history. Additionally, it includes functionality to handle multiple matchdays, with users being able to select players for each matchday and view their performance over time.
-![](fantasy.jpeg)
+![alt text](project_images/AFL_LOGO.png "Title")
+# This is Amateur Fantasy League
+AFL: Amateur Fantasy League is an app for amateur teams and leagues. In them, they will be able to choose 6 players each day and add their scores to try to lead the classification. They will be able to follow the statistics of each player and the league.
+
+This web application, developed in Python with the Flask Framework, HTML and CSS, has an administrator section to add matchdays, players and weekly scores.
+Users can register using a code.
+All of this is stored in a MySQL database.
+
+<img src="project_images/1.jpeg" width=20%>
+<img src="project_images/2.jpeg" width=20%>
+<img src="project_images/3.jpeg" width=20%>
+<img src="project_images/4.jpeg" width=20%>
+
+
+# Getting started
