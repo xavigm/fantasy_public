@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Fantasy Veteranos</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    p {
+      text-align: center;
+    }
+
+    body {
+      background-image: url("static/fotos/bg.jpg");
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center center;
+    }
+
+    .w3-white {
+      margin-top: 4%;
+    }
+
+    body,
+    h1 {
+      font-family: "Montserrat", sans-serif;
+    }
+
+    img {
+      margin-bottom: -7px;
+    }
+
+    .w3-row-padding img {
+      margin-bottom: 12px;
+    }
+
+    .form-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+      background-image: url(static/fotos/field.png);
+      padding: 10px;
+      background-size: 103%;
+      background-repeat: no-repeat;
+      background-position-x: -10px;
+    }
+
+    .countdown-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #5d5d5d;
+      color: #0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1em;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-align: center;
+      margin: 10px auto;
+      width: 90%;
+    }
+
+    .countdown-item {
+      margin: 0 5px;
+    }
+
+    .header-content {
+      background: rgb(123 121 121 / 70%);
+      color: #fff;
+      padding: 1px;
+      border-radius: 10px;
+      text-align: center;
+      margin: 20px auto;
+      width: 80%;
+    }
+
+    .bottom-menu {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background-color: #f1f1f1;
+      border-top: 1px solid #ccc;
+      padding: 10px 0;
+      z-index: 1000;
+    }
+
+    .bottom-menu a {
+      flex-grow: 1;
+      text-align: center;
+      color: #888;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .bottom-menu a.active {
+      color: #000;
+    }
+
+    .bottom-menu i {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    body::after {
+      content: "";
+      display: block;
+      height: 1px;
+      margin-top: -1px;
+    }
+
+    /* Estilos para el overlay del pop-up */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    /* Estilos para la ventana pop-up */
+    .popup-content {
+      background-color: white;
+      width: 90%;
+      height: 90%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Estilos para el botón de cerrar */
+    .popup-close-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 20px;
+      border-radius: 5px;
+      z-index: 10000;
+    }
+
+    /* Estilos para el video dentro del pop-up */
+    .popup-content video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .carta{
+      width:30%;
+      transform:
+    perspective(800px)
+    rotateY(25deg)
+    scale(0.8)
+    rotateX(10deg);
+  filter: blur(2px);
+  opacity: 0.5;
+  transition: 0.6s ease all;
+  animation: animateModal 0.6s ease forwards;
+  animation-delay: 3s;
+}
+
+@keyframes animateModal {
+  to {
+    transform:
+      rotateY(-15deg)
+      rotateX(10deg)
+      scale(1);
+    filter: blur(0);
+    opacity: 1;
+  }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="popup" class="popup-overlay">
+    <div class="popup-content">
+      <video controls autoplay muted id="popupVideo">
+        <source src="static/fotos/video.mp4" type="video/mp4">
+        Tu navegador no soporta la reproducción de este video.
+      </video>
+    </div>
+    <button class="popup-close-btn" onclick="closePopup()">X</button>
+  </div>
+
+  <!-- Sidebar -->
+  <nav class="w3-sidebar w3-black w3-animate-top w3-xxlarge" style="display:none;padding-top:150px" id="mySidebar">
+    <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-black w3-xxlarge w3-padding w3-display-topright"
+      style="padding:6px 24px">
+      <i class="fa fa-remove"></i>
+    </a>
+    <div class="w3-bar-block w3-center">
+      <a href="/" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Inicio</a>
+      <a href="/elegir_jugadores" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Jugadores</a>
+      <a href="/clasificacion" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Clasificación</a>
+      <a href="/historico" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Historico</a>
+      <a href="/logout" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Logout</a>
+      {% if current_user.admin %}
+      <a href="/admin" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Administración</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- !PAGE CONTENT! -->
+  <div class="w3-content" style="max-width:1500px">
+
+    <!-- Header -->
+    <div>
+      <img src="static/fotos/fantasy.png" width="80%" style="margin-top:10px">
+      <span class="w3-button w3-xxlarge w3-white w3-right" onclick="w3_open()"><i class="fa fa-bars"></i></span>
+      <div class="w3-clear"></div>
+      <header class="header-content">
+        <p><b>Siguiente jornada: {{ jornada_actual }}<br> Fecha: {{ fecha_jornada }}<br> Rival: {{ rival }}</b></p>
+        <div id="countdown" class="countdown-container">
+          <span id="days" class="countdown-item">00</span>:
+          <span id="hours" class="countdown-item">00</span>:
+          <span id="minutes" class="countdown-item">00</span>:
+          <span id="seconds" class="countdown-item">00</span>
+        </div>
+      </header>
+    </div>
+
+    {% if mensaje %}
+    <p>{{ mensaje }}
+      <a href="/elegir_jugadores" class="w3-btn w3-green" style="text-align: center;">Jugadores</a>
+    </p>
+
+    <ul class="form-container">
+      {% for jugador in jugadores_seleccionados %}
+      <img src="static/fotos/{{ jugador.1 }}" alt="{{ jugador.0 }}" class="carta">
+      {% endfor %}
+    </ul>
+    {% else %}
+    <ul class="form-container" style="background-image: url('static/fotos/field.png');padding-block:30px;background-size: 100%;background-repeat: no-repeat;">
+      {% for jugador in jugadores_seleccionados %}
+      <img src="static/fotos/{{ jugador.1 }}" alt="{{ jugador.0 }}" class="carta">
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+  </div>
+
+  <!-- Bottom Menu -->
+  <div class="bottom-menu">
+    <a href="/" class="active">
+      <i class="fa fa-home"></i>
+      Inicio
+    </a>
+    <a href="/elegir_jugadores">
+      <i class="fa fa-users"></i>
+      Jugadores
+    </a>
+    <a href="/clasificacion">
+      <i class="fa fa-trophy"></i>
+      Clasificación
+    </a>
+    <a href="/historico">
+      <i class="fa fa-history"></i>
+      Histórico
+    </a>
+  </div>
+
+  <script>
+    // Toggle grid padding
+    function myFunction() {
+      var x = document.getElementById("myGrid");
+      if (x.className === "w3-row") {
+        x.className = "w3-row-padding";
+      } else {
+        x.className = x.className.replace("w3-row-padding", "w3-row");
+      }
+    }
+
+    // Open and close sidebar
+    function w3_open() {
+      document.getElementById("mySidebar").style.width = "100%";
+      document.getElementById("mySidebar").style.display = "block";
+    }
+
+    function w3_close() {
+      document.getElementById("mySidebar").style.display = "none";
+    }
+
+    // Función para cerrar el pop-up
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+
+    // Mostrar el pop-up al cargar la página
+    window.onload = function () {
+      document.getElementById('popup').style.display = 'flex';
+    };
+
+    // Cerrar el popup al terminar el video
+    document.getElementById('popupVideo').addEventListener('ended', closePopup);
+
+    // Función para el contador
+    document.addEventListener('DOMContentLoaded', function () {
+      const targetDate = new Date("{{ fecha_jornada }}").getTime();
+
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById('days').innerText = days.toString().padStart(2, '0');
+        document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+        document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+        document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+
+        if (distance < 0) {
+          clearInterval(interval);
+          document.getElementById('countdown').innerText = "Jornada en progreso";
+        }
+      }
+
+      const interval = setInterval(updateCountdown, 1000);
+      updateCountdown();
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,122 @@
+body {
+    background-image: url("static/fotos/bg.jpg");
+    text-align:center;
+  }  
+  body,h1 {font-family: "Montserrat", sans-serif}
+  img {margin-bottom: -7px}
+  .w3-row-padding img {margin-bottom: 12px}
+  table {
+              width: 100%;
+              border-collapse: collapse;
+          }
+          th, td {
+              border: 0px solid black;
+              padding: 8px;
+              text-align: left;
+          }
+          .foto {
+              max-width: 100px;
+              max-height: 100px;
+          }
+          .tab {
+              display: none;
+          }
+          .tab.active {
+              display: block;
+          }
+          .tabs {
+              display: flex;
+              cursor: pointer;
+          }
+          .tabs div {
+              padding: 10px;
+              background: #ddd;
+              margin-right: 2px;
+          }
+          .tabs div.active {
+              background: #bbb;
+          }
+
+    body,
+    h1 {
+      font-family: "Montserrat", sans-serif
+    }
+
+    .w3-white{
+      margin-top: 4%;
+    }
+
+    img {
+      margin-bottom: -7px
+    }
+
+    .w3-row-padding img {
+      margin-bottom: 12px
+    }
+
+  /* Estilos para el borde verde */
+  .selected {
+    border: 2px solid green;
+  }
+
+  .label-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* Permitir que los labels pasen a la siguiente línea si no hay suficiente espacio */
+    justify-content: space-between;
+    /* Distribuir los labels equitativamente en el contenedor */
+  }
+
+  /* Estilos para los labels */
+  label {
+    margin-right: 20px;
+    /* Espacio entre los labels */
+  }
+
+  .form-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-bottom: 100px;
+  }
+
+  .save-button {
+    position: fixed;
+    bottom: 50px;
+    left: 81%;
+    transform: translateX(-50%);
+    z-index: 999;
+    opacity: 0.9;
+    width: 16%;
+    font-size: 30px;
+  }
+
+    .bottom-menu {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background-color: #f1f1f1;
+      border-top: 1px solid #ccc;
+      padding: 10px 0;
+    }
+
+    .bottom-menu a {
+      flex-grow: 1;
+      text-align: center;
+      color: #888;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .bottom-menu a.active {
+      color: #000;
+    }
+
+    .bottom-menu i {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 5px;
+    }          

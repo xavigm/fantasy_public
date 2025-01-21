@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Fantasy Veteranos</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    body {
+      background-image: url("static/fotos/bg.jpg");
+    }
+
+    body,
+    h1 {
+      font-family: "Montserrat", sans-serif
+    }
+
+    .w3-white {
+      margin-top: 4%;
+    }
+
+    img {
+      margin-bottom: -7px
+    }
+
+    .w3-row-padding img {
+      margin-bottom: 12px
+    }
+
+    /* Estilos para el borde verde */
+    .selected {
+      border: 2px solid green;
+    }
+
+    .label-container {
+      display: flex;
+      flex-wrap: wrap;
+      /* Permitir que los labels pasen a la siguiente línea si no hay suficiente espacio */
+      justify-content: space-between;
+      /* Distribuir los labels equitativamente en el contenedor */
+    }
+
+    /* Estilos para los labels */
+    label {
+      margin-right: 20px;
+      /* Espacio entre los labels */
+    }
+
+    .form-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+      margin-bottom: 100px;
+    }
+
+    .save-button {
+      position: fixed;
+      bottom: 50px;
+      left: 81%;
+      transform: translateX(-50%);
+      z-index: 999;
+      opacity: 0.9;
+      width: 16%;
+      font-size: 30px;
+    }
+
+    .bottom-menu {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background-color: #f1f1f1;
+      border-top: 1px solid #ccc;
+      padding: 10px 0;
+    }
+
+    .bottom-menu a {
+      flex-grow: 1;
+      text-align: center;
+      color: #888;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .bottom-menu a.active {
+      color: #000;
+    }
+
+    .bottom-menu i {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    /* Estilos para el popup */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background-color: white;
+      padding: 20px;
+      text-align: center;
+      border-radius: 10px;
+      max-width: 300px;
+      margin: auto;
+    }
+
+    .popup-content h2 {
+      margin: 0 0 15px 0;
+    }
+
+    .popup-content button {
+      background-color: green;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .popup-content button:hover {
+      background-color: darkgreen;
+    }
+  </style>
+  <script>
+    // Función para alternar la clase "selected" cuando se hace clic en la imagen
+    function toggleSelected(img) {
+      // Obtener todas las imágenes seleccionadas
+      var selectedImages = document.querySelectorAll('.selected');
+      // Verificar si ya hay 6 imágenes seleccionadas
+      if (selectedImages.length < 6 || img.classList.contains("selected")) {
+        img.classList.toggle("selected");
+      } else {
+        // Mostrar popup si ya hay 6 jugadores seleccionados
+        document.getElementById("popupOverlay").style.display = "flex";
+        var checkbox = img.nextElementSibling;
+        checkbox.checked = !checkbox.checked;
+      }
+    }
+
+    // Función para cerrar el popup
+    function closePopup() {
+      document.getElementById("popupOverlay").style.display = "none";
+    }
+  </script>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <nav class="w3-sidebar w3-black w3-animate-top w3-xxlarge" style="display:none;padding-top:150px" id="mySidebar">
+    <a href="javascript:void(0)" onclick="w3_close()"
+      class="w3-button w3-black w3-xxlarge w3-padding w3-display-topright" style="padding:6px 24px">
+      <i class="fa fa-remove"></i>
+    </a>
+    <div class="w3-bar-block w3-center">
+      <a href="/" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Inicio</a>
+      <a href="/elegir_jugadores" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Jugadores</a>
+      <a href="/clasificacion" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Clasificación</a>
+      <a href="/historico" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Historico</a>
+      <a href="/logout" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Logout</a>
+    </div>
+  </nav>
+
+  <!-- !PAGE CONTENT! -->
+  <div class="w3-content" style="max-width:1500px">
+
+    <!-- Header -->
+    <div>
+      <img src="static/fotos/fantasy.png" width="80%" style="margin-top:10px">
+      <span class="w3-button w3-xxlarge w3-white w3-right" onclick="w3_open()"><i class="fa fa-bars"></i></span>
+      <div class="w3-clear"></div>
+      <header class="w3-center w3-margin-bottom">
+        <p><b>Seleccionar Jugadores</b></p>
+      </header>
+    </div>
+
+    <form action="/procesar_seleccion" method="post" class="form-container">
+      <input type="hidden" name="usuario_id" value="1">
+      <!-- Aquí debería estar la lógica para obtener el usuario actual -->
+      {% for jugador in jugadores %}
+      <label>
+        <!-- La función toggleSelected se llama cuando se hace clic en la imagen -->
+        <img src="static/fotos/{{ jugador.1 }}" alt="{{ jugador.0 }}" width="150px" onclick="toggleSelected(this)">
+        <!-- El valor del checkbox se mantiene oculto y no visible para el usuario -->
+        <input type="checkbox" name="jugadores" value="{{ jugador.2 }}" style="display: none;">
+        {{ jugador.nombre }}<br>
+      </label>
+      {% endfor %}
+      <button type="submit" class="w3-btn w3-green save-button" style="margin:5%"><i class="fa fa-save"></i></button>
+    </form>
+  </div>
+
+  <!-- Popup -->
+  <div id="popupOverlay" class="popup-overlay">
+    <div class="popup-content">
+      <h2>Límite alcanzado</h2>
+      <p>Solo puedes seleccionar hasta 6 jugadores.</p>
+      <button onclick="closePopup()">Aceptar</button>
+    </div>
+  </div>
+
+  <!-- Bottom Menu -->
+  <div class="bottom-menu">
+    <a href="/">
+      <i class="fa fa-home"></i>
+      Inicio
+    </a>
+    <a href="/elegir_jugadores" class="active">
+      <i class="fa fa-users"></i>
+      Jugadores
+    </a>
+    <a href="/clasificacion">
+      <i class="fa fa-trophy"></i>
+      Clasificación
+    </a>
+    <a href="/historico">
+      <i class="fa fa-history"></i>
+      Histórico
+    </a>
+  </div>
+
+  <script>
+    // Open and close sidebar
+    function w3_open() {
+      document.getElementById("mySidebar").style.width = "100%";
+      document.getElementById("mySidebar").style.display = "block";
+    }
+
+    function w3_close() {
+      document.getElementById("mySidebar").style.display = "none";
+    }
+  </script>
+
+</body>
+
+</html>

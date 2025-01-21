@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Fantasy Veteranos</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    body {
+      background-image: url("static/fotos/bg.jpg");
+      text-align: center;
+    }
+
+    .animated-border-box, .animated-border-box-glow{
+  max-height: 200px;
+  max-width: 250px;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  overflow: hidden; 
+  z-index: 0;
+  /* Border Radius */
+  border-radius: 10px;
+}
+
+.animated-border-box-glow{
+  overflow: hidden;
+  /* Glow Blur */
+  filter: blur(20px);
+}
+
+.animated-border-box:before, .animated-border-box-glow:before {
+  content: '';
+  z-index: -2;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  position: absolute;
+  width: 99999px;
+  height: 99999px;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  /*border color, change middle color*/
+  background-image: conic-gradient(rgba(0,0,0,0), #1976ed, rgba(0,0,0,0) 25%);
+  /* change speed here */
+  animation: rotate 4s linear infinite;
+}
+
+.animated-border-box:after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  /* border width */
+  left: 5px;
+  top: 5px;
+  /* double the px from the border width left */
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  /*bg color*/
+  background: #292a2e;
+  /*box border radius*/
+  border-radius: 7px;
+}
+
+@keyframes rotate {
+  100% {
+    transform: translate(-50%, -50%) rotate(1turn);
+  }
+}
+
+
+    .w3-white {
+      margin-top: 4%;
+    }
+
+    body,
+    h1 {
+      font-family: "Montserrat", sans-serif
+    }
+
+    .player-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 100px;
+    }
+
+    .player {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      cursor: pointer;
+    }
+
+    .player img {
+      height: 120%;
+    }
+
+    .badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 50%;
+      font-size: 16px;
+    }
+
+    .bottom-menu {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background-color: #f1f1f1;
+      border-top: 1px solid #ccc;
+      padding: 10px 0;
+    }
+
+    .bottom-menu a {
+      flex-grow: 1;
+      text-align: center;
+      color: #888;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .bottom-menu a.active {
+      color: #000;
+    }
+
+    .bottom-menu i {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .tab {
+      overflow: hidden;
+      border-bottom: 1px solid #ccc;
+      background-color: #f1f1f1;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .tab button {
+      background-color: inherit;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.3s;
+      font-size: 17px;
+    }
+
+    .tab button:hover {
+      background-color: #ddd;
+    }
+
+    .tab button.active {
+      background-color: #ccc;
+    }
+
+    .crown-icon {
+      position: absolute;
+      top: -9px;
+      left: 63px;
+      color: gold;
+      font-size: 30px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .mvp-label {
+      margin-top: -120px;
+      font-size: 40px;
+      color: white;
+      font-family: 'Montserrat';
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 1.5);
+    }
+
+    .mvp-glow {
+      background: radial-gradient(circle, #ffda07 10%, transparent 80%);
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding-top: 60px;
+    }
+
+    .modal-content {
+      background-color: #fefefee0;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .modal-player-image {
+  margin: -10px;
+  transform:
+    perspective(800px)
+    rotateY(25deg)
+    scale(0.9)
+    rotateX(10deg);
+  filter: blur(2px);
+  opacity: 0.5;
+  transition: 0.6s ease all;
+  animation: animateModal 0.6s ease forwards;
+  animation-delay: 1s;
+}
+
+@keyframes animateModal {
+  to {
+    transform:
+      perspective(800px)
+      rotateY(-15deg)
+      translateY(22px)
+      rotateX(10deg)
+      scale(1.5);
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+    
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .player-stats-table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    .player-stats-table th,
+    .player-stats-table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+
+    .player-stats-table th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    /* Estilo para el fondo verde de la puntuación total */
+    .total-score {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 18px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <nav class="w3-sidebar w3-black w3-animate-top w3-xxlarge" style="display:none;padding-top:150px" id="mySidebar">
+    <a href="javascript:void(0)" onclick="w3_close()"
+      class="w3-button w3-black w3-xxlarge w3-padding w3-display-topright" style="padding:6px 24px">
+      <i class="fa fa-remove"></i>
+    </a>
+    <div class="w3-bar-block w3-center">
+      <a href="/" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Inicio</a>
+      <a href="/elegir_jugadores" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Jugadores</a>
+      <a href="/clasificacion" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Clasificación</a>
+      <a href="/historico" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Historico</a>
+      <a href="/logout" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Logout</a>
+    </div>
+  </nav>
+
+  <!-- !PAGE CONTENT! -->
+  <div class="w3-content" style="max-width:1500px">
+
+    <!-- Header -->
+    <div>
+      <img src="static/fotos/fantasy.png" width="80%" style="margin-top:10px">
+      <span class="w3-button w3-xxlarge w3-white w3-right" onclick="w3_open()"><i class="fa fa-bars"></i></span>
+      <div class="w3-clear"></div>
+      <header class="w3-center w3-margin-bottom">
+        <p><b>Historial de Puntuaciones</b></p>
+      </header>
+    </div>
+
+    <!-- Pestañas -->
+    <div class="tab">
+      <button class="tablinks active" onclick="changeTab(event, 'seleccionado')">Tu selección</button>
+      <button class="tablinks" onclick="changeTab(event, 'todos')">Otros</button>
+    </div>
+
+    <!-- Select de Jornadas -->
+    <div class="w3-margin-bottom">
+      <label for="jornadas">Selecciona una jornada:</label>
+      <select id="jornadas" onchange="filtrarPuntuaciones()">
+        {% for jornada in jornadas %}
+        <option value="{{ jornada }}" {% if loop.last %} selected {% endif %}>{{ jornada }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Contenedor de Jugadores - Seleccionado -->
+    <div id="player-container-seleccionado" class="player-container">
+      {% for puntuacion in puntuaciones %}
+      {% if puntuacion[5] == 'seleccionado' %}
+      <div class="player jornada-{{ puntuacion[2] }}" style="display: none;">
+        <div class="badge">{{ puntuacion[3] }}</div>
+        <img src="static/fotos/{{ puntuacion[1] }}" alt="{{ puntuacion[0] }}" onclick="openModal('{{ puntuacion[0] }}', '{{ puntuacion[1] }}')">
+        {% if puntuacion[4] %}
+        <div class="mvp-label animated-border-box-glow">MVP</div>
+        <i class="fa fa-crown crown-icon"></i> <!-- Icono de la corona -->
+        {% endif %}
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Contenedor de Jugadores - Otros -->
+    <div id="player-container-todos" class="player-container" style="display: none;">
+      {% for puntuacion in puntuaciones %}
+      {% if puntuacion[5] == 'todos' %}
+      <div class="player jornada-{{ puntuacion[2] }}" style="display: none;">
+        <div class="badge">{{ puntuacion[3] }}</div>
+        <img src="static/fotos/{{ puntuacion[1] }}" alt="{{ puntuacion[0] }}" onclick="openModal('{{ puntuacion[0] }}', '{{ puntuacion[1] }}')">
+        {% if puntuacion[4] %}
+        <div class="mvp-label">MVP</div>
+        <i class="fa fa-crown crown-icon"></i> <!-- Icono de la corona -->
+        {% endif %}
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="bottom-menu">
+      <a href="/">
+        <i class="fas fa-home"></i>
+        Inicio
+      </a>
+      <a href="/elegir_jugadores">
+        <i class="fas fa-user"></i>
+        Jugadores
+      </a>
+      <a href="/clasificacion">
+        <i class="fas fa-trophy"></i>
+        Clasificación
+      </a>
+      <a href="/historico" class="active">
+        <i class="fas fa-history"></i>
+        Histórico
+      </a>
+    </div>
+  </div>
+
+  <!-- Modal para Detalles del Jugador -->
+  <div id="playerModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <img id="modal-player-image" class="modal-player-image" src="" alt="Player Image" style="width: 50%;">
+      <h2 id="modal-player-name"></h2>
+      <div id="total-score" class="total-score"></div> <!-- Elemento para la puntuación total -->
+      <table class="player-stats-table">
+        <thead>
+          <tr>
+            <th>Jornada</th>
+            <th>Puntuación</th>
+          </tr>
+        </thead>
+        <tbody id="modal-player-stats">
+          <!-- Fila de ejemplo; se llenará dinámicamente -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function w3_open() {
+      document.getElementById("mySidebar").style.display = "block";
+    }
+
+    function w3_close() {
+      document.getElementById("mySidebar").style.display = "none";
+    }
+
+    function changeTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+
+      tabcontent = document.getElementsByClassName("player-container");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+
+      document.getElementById("player-container-" + tabName).style.display = "flex";
+      evt.currentTarget.className += " active";
+    }
+
+    function filtrarPuntuaciones() {
+      var selectedJornada = document.getElementById("jornadas").value;
+      var jugadores = document.querySelectorAll(".player");
+
+      jugadores.forEach(function (jugador) {
+        if (jugador.classList.contains("jornada-" + selectedJornada)) {
+          jugador.style.display = "block";
+        } else {
+          jugador.style.display = "none";
+        }
+      });
+    }
+
+    // Función para abrir el modal y cargar datos del jugador
+    function openModal(playerName, playerImage) {
+      document.getElementById("modal-player-name").textContent = playerName;
+      document.getElementById("modal-player-image").src = `static/fotos/${playerImage}`;
+
+      const statsTableBody = document.getElementById("modal-player-stats");
+      const totalScoreElement = document.getElementById("total-score");
+      statsTableBody.innerHTML = ''; // Limpiar datos anteriores
+      let totalScore = 0; // Inicializar la puntuación total
+
+      {% for puntuacion in puntuaciones %}
+      if (playerName === "{{ puntuacion[0] }}") {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>{{ puntuacion[2] }}</td><td>{{ puntuacion[3] }}</td>`;
+        statsTableBody.appendChild(row);
+        totalScore += {{ puntuacion[3] }}; // Sumar la puntuación
+      }
+      {% endfor %}
+
+      // Mostrar la puntuación total en el modal
+      totalScoreElement.textContent = `Puntuación Total: ${totalScore}`;
+      document.getElementById("playerModal").style.display = "block";
+    }
+
+    // Función para cerrar el modal
+    function closeModal() {
+      document.getElementById("playerModal").style.display = "none";
+    }
+
+    // Cerrar el modal si el usuario hace clic fuera de él
+    window.onclick = function (event) {
+      const modal = document.getElementById("playerModal");
+      if (event.target == modal) {
+        closeModal();
+      }
+    };
+
+    // Función para mostrar los jugadores de la última jornada al cargar la página
+    window.onload = function() {
+      filtrarPuntuaciones(); // Llama a la función de filtrado al cargar
+    };
+  </script>
+
+</body>
+
+</html>

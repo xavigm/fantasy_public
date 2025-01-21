@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Fantasy Veteranos</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    body {
+      background-image: url("static/fotos/bg.jpg");
+    }
+
+    body,
+    h1 {
+      font-family: "Montserrat", sans-serif;
+    }
+
+    .w3-white {
+      margin-top: 4%;
+    }
+
+    img {
+      margin-bottom: -7px;
+    }
+
+    .w3-row-padding img {
+      margin-bottom: 12px;
+    }
+
+    .bottom-menu {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background-color: #f1f1f1;
+      border-top: 1px solid #ccc;
+      padding: 10px 0;
+    }
+
+    .bottom-menu a {
+      flex-grow: 1;
+      text-align: center;
+      color: #888;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .bottom-menu a.active {
+      color: #000;
+    }
+
+    .bottom-menu i {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+    .w3-container, .w3-panel {
+    padding: 0;
+    } 
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <nav class="w3-sidebar w3-black w3-animate-top w3-xxlarge" style="display:none;padding-top:150px" id="mySidebar">
+    <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-black w3-xxlarge w3-padding w3-display-topright" style="padding:6px 24px">
+      <i class="fa fa-remove"></i>
+    </a>
+    <div class="w3-bar-block w3-center">
+      <a href="/" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Inicio</a>
+      <a href="/elegir_jugadores" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Jugadores</a>
+      <a href="/clasificacion" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Clasificación</a>
+      <a href="/historico" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Historico</a>
+      <a href="/logout" class="w3-bar-item w3-button w3-text-grey w3-hover-black">Logout</a>
+    </div>
+  </nav>
+
+  <!-- !PAGE CONTENT! -->
+  <div class="w3-content" style="max-width:1500px">
+
+    <!-- Header -->
+    <div>
+      <img src="static/fotos/fantasy.png" width="80%" style="margin-top:10px">
+      <span class="w3-button w3-xxlarge w3-white w3-right" onclick="w3_open()"><i class="fa fa-bars"></i></span>
+      <div class="w3-clear"></div>
+      <header class="w3-center w3-margin-bottom">
+        <p><b>Clasificación</b></p>
+      </header>
+    </div>
+
+    <!-- Pestañas de Clasificación -->
+    <div class="w3-bar w3-border-bottom">
+      <button class="w3-bar-item w3-button tablink w3-green" onclick="openTab(event, 'Total')">Total</button>
+      <button class="w3-bar-item w3-button tablink" onclick="openTab(event, 'Parciales')">Parciales</button>
+    </div>
+
+    <!-- Tabla de Clasificación Total -->
+    <div id="Total" class="w3-container tab" style="display: block;">
+      <table class="w3-table-all">
+        <tr class="w3-center w3-green">
+          <th class="w3-center">Posición</th>
+          <th class="w3-center">Usuario</th>
+          <th class="w3-center">Puntuación Total</th>
+        </tr>
+        {% for usuario in usuarios %}
+        <tr>
+          <td class="w3-center">{{ loop.index }}</td>
+          <td class="w3-center">{{ usuario[0] }}</td>
+          <td class="w3-center">{{ usuario[1] }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <!-- Clasificación Parcial -->
+    <div id="Parciales" class="w3-container tab" style="display: none;">
+      <label for="jornadaSelect">Selecciona una jornada:</label>
+      <select id="jornadaSelect" onchange="showParcial(this.value)">
+        {% for jornada_id, fecha in jornadas_info.items() %}
+        <option value="{{ jornada_id }}">Jornada {{ jornada_id }} - {{ fecha }}</option>
+        {% endfor %}
+      </select>
+
+      <div id="parcialTable" style="margin-top:20px;"></div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Menu -->
+  <div class="bottom-menu">
+    <a href="/">
+      <i class="fa fa-home"></i>
+      Inicio
+    </a>
+    <a href="/elegir_jugadores">
+      <i class="fa fa-users"></i>
+      Jugadores
+    </a>
+    <a href="/clasificacion" class="active">
+      <i class="fa fa-trophy"></i>
+      Clasificación
+    </a>
+    <a href="/historico">
+      <i class="fa fa-history"></i>
+      Histórico
+    </a>
+  </div>
+
+  <script>
+    function openTab(evt, tabName) {
+      var i, x, tablinks;
+      x = document.getElementsByClassName("tab");
+      for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablink");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" w3-green", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " w3-green";
+  
+      // Si se selecciona la pestaña de "Parciales", elegir la última jornada automáticamente
+      if (tabName === 'Parciales') {
+        selectLastJornada();
+      }
+    }
+  
+    function selectLastJornada() {
+      const jornadaSelect = document.getElementById("jornadaSelect");
+      const lastJornadaId = jornadaSelect.options[jornadaSelect.options.length - 1].value;
+      jornadaSelect.value = lastJornadaId;  // Seleccionar la última jornada
+      showParcial(lastJornadaId);  // Mostrar resultados de la última jornada
+    }
+  
+    function showParcial(jornadaId) {
+      const parciales = {{ parciales|tojson }};
+      let tableHTML = '<table class="w3-table-all"><tr class="w3-center w3-green"><th class="w3-center">Posición</th><th class="w3-center">Usuario</th><th class="w3-center">Puntuación</th></tr>';
+      if (parciales[jornadaId]) {
+        parciales[jornadaId].forEach((usuario, index) => {
+          tableHTML += `<tr><td class="w3-center">${index + 1}</td><td class="w3-center">${usuario[0]}</td><td class="w3-center">${usuario[1]}</td></tr>`;
+        });
+      } else {
+        tableHTML += '<tr><td colspan="3" class="w3-center">No hay puntuaciones para esta jornada</td></tr>';
+      }
+      tableHTML += '</table>';
+      document.getElementById("parcialTable").innerHTML = tableHTML;
+    }
+  </script>
+  
+
+</body>
+
+</html>

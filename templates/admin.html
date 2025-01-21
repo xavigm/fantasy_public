@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fantasy Veteranos</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {
+  background-image: url("static/fotos/bg.jpg");
+  text-align:center;
+}  
+body,h1 {font-family: "Montserrat", sans-serif}
+img {margin-bottom: -7px}
+.w3-row-padding img {margin-bottom: 12px}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  border: 0px solid black;
+  padding: 8px;
+  text-align: left;
+}
+.foto {
+  max-width: 100px;
+  max-height: 100px;
+}
+.tab {
+  display: none;
+}
+.tab.active {
+  display: block;
+}
+.tabs {
+  display: flex;
+  cursor: pointer;
+}
+.tabs div {
+  padding: 10px;
+  background: #ddd;
+  margin-right: 2px;
+}
+.tabs div.active {
+  background: #bbb;
+}
+</style>
+<script>
+function openTab(evt, tabName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tab");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
+</head>
+<body>
+<h1>Administración</h1>
+<a href="/">Volver al inicio</a>
+
+<div class="tabs">
+  <div class="tablink active" onclick="openTab(event, 'Jugadores')">Jugadores</div>
+  <div class="tablink" onclick="openTab(event, 'Puntuaciones')">Puntuaciones</div>
+  <div class="tablink" onclick="openTab(event, 'Usuarios')">Usuarios</div>
+  <div class="tablink" onclick="openTab(event, 'Jornadas')">Jornadas</div>
+</div>
+
+<div id="Jugadores" class="tab active">
+  <h2>Agregar/Modificar Jugadores</h2>
+  <form method="POST" action="{{ url_for('admin') }}">
+    <label for="jugador_id">Jugador a modificar:</label>
+    <select name="jugador_id" id="jugador_id">
+      <option value="nuevo">Nuevo jugador</option>
+      {% for jugador in jugadores %}
+        <option value="{{ jugador[0] }}">{{ jugador[1] }}</option>
+      {% endfor %}
+    </select>
+    <br>
+    <label for="nombre">Nombre:</label>
+    <input type="text" name="nombre" id="nombre">
+    <br>
+    <label for="imagen">URL de la imagen:</label>
+    <input type="text" name="imagen" id="imagen">
+    <br>
+    <input type="submit" value="Guardar">
+  </form>
+</div>
+
+<div id="Puntuaciones" class="tab">
+  <h2>Agregar Puntuaciones</h2>
+  <form method="POST" action="{{ url_for('admin') }}">
+    <label for="puntuacion_jornada_id">Jornada:</label>
+    <select name="puntuacion_jornada_id" id="puntuacion_jornada_id">
+      {% for jornada in jornadas %}
+        <option value="{{ jornada[0] }}">{{ jornada[1] }}</option>
+      {% endfor %}
+    </select>
+    <br>
+    <table>
+      <tr>
+        <th>Jugador</th>
+        <th>Puntuación</th>
+        <th>MVP</th>
+      </tr>
+      {% for jugador in jugadores %}
+        <tr>
+          <td>{{ jugador[1] }}</td>
+          <td>
+            <input type="number" name="puntuacion_{{ jugador[0] }}" placeholder="Puntuación" required min="0" max="25">
+          </td>
+          <td>
+            <input type="radio" name="mvp" value="{{ jugador[0] }}" required>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+    <input type="submit" value="Guardar">
+  </form>
+</div>
+
+<div id="Usuarios" class="tab">
+  <h2>Crear Usuario</h2>
+  <form method="POST" action="{{ url_for('admin') }}">
+    <label for="nombre">Nombre:</label>
+    <input type="text" name="nombre" id="nombre">
+    <br>
+    <label for="password">Contraseña:</label>
+    <input type="password" name="password" id="password">
+    <br>
+    <input type="hidden" name="nuevo_usuario" value="1">
+    <input type="submit" value="Crear Usuario">
+  </form>
+</div>
+
+<div id="Jornadas" class="tab">
+  <h2>Agregar/Modificar Jornadas</h2>
+  <form method="POST" action="{{ url_for('admin') }}">
+    <label for="jornada_id">Jornada a modificar:</label>
+    <select name="jornada_id" id="jornada_id">
+      <option value="">Nueva jornada</option>
+      {% for jornada in jornadas %}
+        <option value="{{ jornada[0] }}">{{ jornada[1] }}</option>
+      {% endfor %}
+    </select>
+    <br>
+    <label for="fecha">Fecha:</label>
+    <input type="date" name="fecha" id="fecha">
+    <br>
+    <input type="submit" value="Guardar">
+  </form>
+  <h3>Crear nueva jornada</h3>
+  <form method="POST" action="{{ url_for('admin') }}">
+    <label for="nueva_fecha">Fecha:</label>
+    <input type="date" name="nueva_fecha" id="nueva_fecha">
+    <br>
+    <input type="submit" value="Crear">
+  </form>
+</div>
+
+<script>
+// Initialize default open tab
+document.getElementsByClassName("tablink")[0].click();
+</script>
+</body>
+</html>

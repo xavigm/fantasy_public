@@ -1,0 +1,5 @@
+Flask==2.2.1
+Flask_Login==0.6.2
+mysql-connector-python
+passlib==1.7.4
+Werkzeug==2.2.2
